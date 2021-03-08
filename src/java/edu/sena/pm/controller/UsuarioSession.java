@@ -30,6 +30,7 @@ public class UsuarioSession implements Serializable {
     private String correIn = "";
     private String claveIn = "";
     private Usuario usuLogin = new Usuario();
+    private String nomRol = "";
 
     /**
      * Creates a new instance of UsuarioSession
@@ -46,10 +47,10 @@ public class UsuarioSession implements Serializable {
                 mensajeSw = "swal('El usuario' , ' No se encuentra registrado  ', 'error')";
             } else {
                 FacesContext fc = FacesContext.getCurrentInstance();
-                if(usuLogin.getRol()== 1){
+                if (usuLogin.getRol() == 1) {
                     fc.getExternalContext().redirect("admin/index.xhtml");
                 }
-                if(usuLogin.getRol()== 2){
+                if (usuLogin.getRol() == 2) {
                     fc.getExternalContext().redirect("user/index.xhtml");
                 }
             }
@@ -63,33 +64,38 @@ public class UsuarioSession implements Serializable {
     public void cerrarSesion() {
         usuLogin = null;
         try {
-            
-            
+
             FacesContext fc = FacesContext.getCurrentInstance();
             ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
             String ctx = ext.getRequestContextPath();
-            
+
             ((HttpSession) ext.getSession(false)).invalidate();
-            
+
             fc.getExternalContext().redirect(ctx + "/index.xhtml");
         } catch (Exception e) {
             System.out.println(" Error cerrando sesion UsuarioSession:cerrarSesion " + e.getMessage());
         }
 
     }
-    
-    public String ConsultarRol( ){
-        
-        String nomRol = "";
-        if(usuLogin.getRol()== 1){
-            nomRol = "Administrador";
-        } 
-        if(usuLogin.getRol()== 2){
+
+ /*
+    public String ConsultarRol() {
+        try {
+            
+            if (usuLogin.getRol() == 1) {
+                nomRol = "Administrador";
+            }
+            if (usuLogin.getRol() == 2) {
+                nomRol = "Usuario";
+            }
+        } catch (Exception e) {
             nomRol = "Usuario";
         }
+
         return nomRol;
-                
+
     }
+*/
 
     public void actualizarMisDatos() {
         String mensajeSw = "";
@@ -126,6 +132,12 @@ public class UsuarioSession implements Serializable {
         this.usuLogin = usuLogin;
     }
 
+    public String getNomRol() {
+        return nomRol;
+    }
+
+    public void setNomRol(String nomRol) {
+        this.nomRol = nomRol;
+    }
+
 }
-
-

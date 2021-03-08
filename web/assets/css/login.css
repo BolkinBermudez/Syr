@@ -27,8 +27,11 @@
   margin-bottom: 1rem;
 }
 
-
-
+.form-label-group .form-control:focus + .label,
+.form-label-group .form-control.not-empty + .label{
+    transform:translateY(24px);
+}
+    
 .form-label-group>label {
   position: absolute;
   top: 0;
