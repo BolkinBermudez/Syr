@@ -7,34 +7,31 @@
 
         <ui:composition>
             <header id="header" class="header">
-                <div class="top-left">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="./"><img src="images/logo.png" alt="Logo"/></a>
 
-                        <a id="menuToggle" class="menutoggle"><i class="fa fa-bars"></i></a>
+                <div class="logo logo-main">
+                    <a class="navbar-brand" href="./"><img src="images/logo.png" alt="Logo"/></a>
+                </div>
+                <div class="nav">
+                    <div class="wrap">
+                        <h:form>
+                            <div class="logo logo-small">
+                                Subastas y Remates
+                            </div>
+                            <nav>
+                                <ul>
+                                    <li><a href="#">Mi Cesta</a></li>
+                                    <li><a href="#">Subastas</a></li>
+                                    <li><a href="#">Mi Cesta</a></li>
+                                    <li><a><h:commandLink action="#{usuarioSession.cerrarSesion()}" class="nav-link" value="Cerrar Sesión"></h:commandLink></a></li>
+                                </ul>
+                            </nav>
+                        </h:form>
                     </div>
                 </div>
-                <div class="top-right">
-                    <div class="header-menu">
 
 
-                        <div class="user-area dropdown float-right" >
-                            <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="user-avatar rounded-circle" src="images/admin.jpg" alt="User Avatar"/>
-                            </a>
-                            <h:form>
-                                <div class="user-menu dropdown-menu" style="width: 183px !important;" >
-                                    <a class="nav-link" href="#"><i class="fa fa- user"></i>${nombreUsuario}</a>
-
-                                    <h:commandLink action="#{usuarioSession.cerrarSesion()}" class="nav-link" value="Logout"></h:commandLink>
 
 
-                                </div>
-                            </h:form>
-                        </div>
-
-                    </div>
-                </div>
             </header>
         </ui:composition>
     </body>

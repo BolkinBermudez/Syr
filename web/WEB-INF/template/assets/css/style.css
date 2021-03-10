@@ -15,10 +15,84 @@
 
 Googel Fonts  */
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700");
+
+@import url('https://fonts.googleapis.com/css2? family = Big + Shoulders + Stencil + Text: wght @ 900 & display = swap');
 /* Googel Fonts End  
 
 */
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700");
+
+.logo{
+    font-family: 'Big Shoulders Stencil Text';
+    font-size: 70px;
+}
+
+.logo-main{
+    height: 200px;
+    padding: 20px;
+    background: #0099d4;
+    color:white;
+    cursor: default;
+}
+
+.logo-small{
+    display: inline-block;
+    font-size: 20px;
+    padding: 4px;
+    margin-right: 50px;
+    color: #42a5f5;
+    cursor: pointer;
+}
+
+.nav{
+    float: left;
+    width: 100%;
+    background:#343a40;
+    color: white;
+    padding: 0 20px;
+    transition: .3s ease all;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: traslate3d(0, 0, 0); 
+} 
+
+.nav .wrap{
+    position: relative;
+    left: -150px;
+    transition: 0.4s ease all;
+}
+
+nav{
+    display: inline-block;
+}
+
+nav ul{
+    margin: 0;
+    padding: 0;
+}
+
+nav li{
+    margin: 0;
+    padding: 0;
+    display: inline-block ;
+}
+
+nav a{
+    display: block;
+    padding: 20px;
+    margin: 0;
+    color: white;
+    text-decoration: none;
+    transition: 0.2s ease all;
+}
+
+nav a:hover{
+    color: white;
+    background: #343a40;
+    
+}
+
+
 .bg-flat-color-1 {
   background: #00c292; }
 

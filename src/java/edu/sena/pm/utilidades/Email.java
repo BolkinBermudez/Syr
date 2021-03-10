@@ -100,7 +100,7 @@ public class Email {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(user));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(para));
-            message.setSubject("Recordatorio Claves Subastas & Remates");
+            message.setSubject("Recordatorio Claves Subastas y Remates");
 
             message.setContent(
                     "<center><img src='https://informatica.uca.es/wp-content/uploads/2016/02/candado.jpg' title='Recordatorio Claves Subastas & Remates'></center>"
@@ -151,10 +151,10 @@ public class Email {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(user));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(para));
-            message.setSubject("Bienvenida a Subastas & Remates");
+            message.setSubject("Bienvenido a Subastas y Remates");
 
             message.setContent(
-                    "<center><img src='https://i.pinimg.com/originals/21/b5/10/21b510a268fc4f7e46607bf482995ae9.png' title='Bienvenidos'></center>"
+                    "<center><img src='https://www.labelgrup.com/img/cms/Subasta%20online%20ok.jpg' title='Bienvenidos'></center>"
                     + "<h3> Bienvenido. "
                     + Nombres
                     + "</h3>"
