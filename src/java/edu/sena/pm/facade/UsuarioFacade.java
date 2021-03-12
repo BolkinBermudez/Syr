@@ -55,4 +55,18 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
         }
     } 
     
+   @Override
+    public boolean actualizarMoneda(int idMoneda, int idUsuario) {
+        try {
+            em.getEntityManagerFactory().getCache().evictAll();
+            Query qt = em.createNativeQuery("UPDATE `usuario` SET `idMoneda` = ? WHERE `usuario`.`idUsuario` = ?");
+            qt.setParameter(1, idMoneda);
+            qt.setParameter(2, idUsuario);
+            qt.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
 }

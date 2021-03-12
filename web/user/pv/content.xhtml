@@ -3,94 +3,81 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:html5="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:body>
         <ui:composition>
 
-            <div class="breadcrumbs">
-                <div class="breadcrumbs-inner">
-                    <div class="row m-0">
-                        <div class="col-sm-4">
-                            <div class="page-header float-left">
-                                <div class="page-title">
-                                    <h1>${panel}</h1>
-                                </div>
-                            </div>
+            <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="mediumModalLabel">Nuevo Producto</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <div class="col-sm-8">
-                            <div class="page-header float-right">
-                                <div class="page-title">
-                                    <ol class="breadcrumb text-right">
-                                        <li><a href="#">Inicio sesion</a></li>
-                                        <li class="active"><a href="#">${panel}</a></li>
-                                    </ol>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="content">
-                <div class="animated fadeIn">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <strong class="card-title">Actualizar</strong>
-                            </div>
-                            <div class="card-body">
-                                <!-- Credit Card -->
-                                <div id="pay-invoice">
+
+
+                        <div class="col-md-12">
+                            <div class="card">
+                                <h:form id="miform" enctype="multipart/form-data">
+
+                                    <h:graphicImage id="imagenDemo" style="height: 200px; width: 200px;" class="card-img-top" value="/images/#{usuarioView.nombreArchivo}"></h:graphicImage>
+
                                     <div class="card-body">
-                                        <div class="card-title">
-                                            <h3 class="text-center">Mis datos</h3>
-                                        </div>
-                                        <hr/>
-                                        <h:form >
-                                            <div class="form-group">
-                                                <label for="cc-payment" class="control-label mb-1">Tipo de documento</label>
-                                                <input id="cc-payment" disabled="true" name="cc-payment" type="text" class="form-control" aria-required="true" aria-invalid="false" value="#{usuarioSession.usuLogin.tipoDocumento}"/>
-                                            </div>
 
-                                            <div class="form-group">
-                                                <label for="cc-docu" class="control-label mb-1">Numero documento</label>
-                                                <input id="cc-docu" disabled="true" name="cc-docu" type="text" class="form-control" aria-required="true" aria-invalid="false" value="#{usuarioSession.usuLogin.documento}"/>
-                                            </div>
+                                        <h:inputFile id="fileImg" onchange="$('#miform\\:myBoton').click();" style="display: none" value="#{usuarioView.archivoImagen}"></h:inputFile>
 
+                                        <h:commandButton id="myBoton" style="display: none" class="btn btn-outline-success" action="#{usuarioView.subeImagen()}" value="Cargar Imagen">
+                                            <f:ajax render="imagenDemo" execute="fileImg" ></f:ajax>
+                                        </h:commandButton>
 
-                                            <div class="form-group has-success">
-                                                <label for="cc-name" class="control-label mb-1">Nombres</label>
-                                                <h:inputText required="true" requiredMessage="Ingrese sus nombres" id="regNombres" value="#{usuarioSession.usuLogin.nombres}" class="form-control" html5:placeholder="Nombres"/>
-                                                <h:message style="color: red" for="regNombres"></h:message>
-                                            </div>
-
-                                            <div class="form-group has-success">
-                                                <label for="cc-name" class="control-label mb-1">Apellidos</label>
-                                                <h:inputText required="true" requiredMessage="Ingrese sus apellidos" id="regApellidos" value="#{usuarioSession.usuLogin.apellidos}" class="form-control" html5:placeholder="Apellidos"/>
-                                                <h:message style="color: red" for="regApellidos"></h:message>
-                                            </div>
-
-                                             <div class="form-group">
-                                                <label for="cc-correo" class="control-label mb-1">Dirección de correo electrónico</label>
-                                                <input id="cc-correo" disabled="true" name="cc-docu" type="text" class="form-control" aria-required="true" aria-invalid="false" value="#{usuarioSession.usuLogin.correo}"/>
-                                            </div>
-                                            
-                                            <div class="form-group has-success">
-                                                <label for="regClave" class="control-label mb-1">Clave</label>
-                                                <h:inputSecret required="true" requiredMessage="Ingrese una clave" id="regClave" value="#{usuarioSession.usuLogin.clave}" class="form-control" html5:placeholder="Clave"/>
-                                                <h:message style="color: red" for="regClave"></h:message>
-                                            </div>
-
-                                            <div>
-                                                <h:commandButton class="btn btn-lg btn-info btn-block" value="Actualizar" action="#{usuarioSession.actualizarMisDatos()}" ></h:commandButton>
-                                            </div>
-                                        </h:form>
+                                        <button type="button" onclick="$('#miform\\:fileImg').click();" class="btn btn-outline-success btn-sm __web-inspector-hide-shortcut__"><i class="fa fa-magic"></i>&nbsp; Cargar Imagen</button>
                                     </div>
+                                </h:form>
+                            </div>
+                        </div>
+
+                        <h:form >
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Categorias </label>
+                                    <h:selectOneMenu  value="#{usuarioView.id_cat_selec}"  class="form-control">
+                                        <f:selectItems itemLabel="#{menuCat.nombreCategoria}" itemValue="#{menuCat.idCategoria}"  value="#{usuarioView.listaCategoria}" var="menuCat"  ></f:selectItems>
+                                    </h:selectOneMenu>
+
+
                                 </div>
 
-                            </div>
-                        </div> <!-- .card -->
+                                <div class="form-group">
+                                    <label>Nombre </label>
+                                    <h:inputText id="regDocumento" required="true" requiredMessage="Ingrese un nombre" value="#{usuarioView.objProd.descripcion}" class="form-control" html5:placeholder="Nombre"/>
+                                    <h:message style="color: red" for="regDocumento"></h:message>
+                                </div>
 
-                    </div><!--/.col-->
+                                <div class="form-group">
+                                    <label>Valor Inicial</label>
+                                    <h:inputText required="true"  requiredMessage="Ingrese un Valor" id="regCorreo" value="#{usuarioView.objProd.precioInicial}" class="form-control" html5:placeholder="Valor Inicial"/>
+                                    <h:message style="color: red" for="regCorreo"></h:message>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Valor Venta</label>
+                                    <h:inputText required="true" requiredMessage="Ingrese un Valor" id="regClave"  value="#{usuarioView.objProd.precioVenta}" class="form-control" html5:placeholder="Valor Venta"/>
+                                    <h:message style="color: red" for="regClave"></h:message>
+                                </div>
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <h:commandButton action="#{usuarioView.crearProducto()}"  class="btn btn-primary btn-flat m-b-30 m-t-30" value="Registrarse"/>
+                            </div>
+                        </h:form>
+                    </div>
                 </div>
             </div>
         </ui:composition>

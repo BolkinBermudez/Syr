@@ -66,11 +66,11 @@
                                                         <td>#{usu.rol}</td>
                                                         <td>#{usu.idMoneda.moneda}</td>
                                                         <td>
-                                                            <c:if test="#{usu.correo != usuarioSession.usuLogin.correo}">
+                                                            <c:if test="#{usu.rol != 1 }">
                                                                 <h:commandButton  action="#{administradorView.cargaUsuarioEditar(usu)}" style="margin-right: 10px" class="btn btn-outline-primary" onclick="$('#btnModal').click();" value="Editar">
                                                                     <f:ajax render=":formModal"></f:ajax>
                                                                 </h:commandButton>
-                                                                <h:commandButton action="#{administradorView.descargaCertificado(usu.id)}" class="btn btn-outline-success" value="Certificado"/>
+                                                                <h:commandButton action="#{administradorView.descargaCertificado(usu.idUsuario)}" class="btn btn-outline-success" value="Certificado"/>
                                                                 <h:commandButton action="#{administradorView.removerUsuario(usu)}" class="btn btn-outline-danger" value="Remover"/>
                                                             </c:if>
                                                         </td>
@@ -169,7 +169,7 @@
                                 <div class="form-group">
                                     <label>Tipo de Moneda </label>
 
-                                    <h:selectOneMenu class="form-control" required="true" id="idMoneda" value="#{administradorView.usReg.idMoneda.idMoneda}">
+                                    <h:selectOneMenu class="form-control" required="true" id="idMoneda" value="#{administradorView.idMoneda}">
                                         <f:selectItem  itemLabel="---" itemValue="#{null}" noSelectionOption="true" />
                                         <f:selectItems value="#{administradorView.listaMonedas}" var="m" itemLabel="#{m.moneda}" itemValue="#{m.idMoneda}" />
                                     </h:selectOneMenu>

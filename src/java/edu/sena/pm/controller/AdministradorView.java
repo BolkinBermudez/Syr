@@ -43,37 +43,42 @@ import org.primefaces.PrimeFaces;
  */
 @Named(value = "administradorView")
 @ViewScoped
-public class AdministradorView implements Serializable{
-    
+public class AdministradorView implements Serializable {
+
+    @Inject
+    private UsuarioSession usuarioSession;
+
     @EJB
     UsuarioFacadeLocal usuarioFacadeLocal;
+    private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
+    private Usuario usReg = new Usuario();
+
     @EJB
     MonedaFacadeLocal monedaFacadeLocal;
-    private ArrayList<Usuario> listaUsuarios = new ArrayList<>();
-    private ArrayList<Moneda> listaMonedas = new ArrayList<>(); 
-    private Usuario usReg = new Usuario();
+    private ArrayList<Moneda> listaMonedas = new ArrayList<>();
+    private Moneda objmoneda = new Moneda();
     
-    @Inject
-     private UsuarioSession usuarioSession;
-    
-    public AdministradorView() {
-    }
-    
-    
-    public void leerListaMonedas(){
-        
-        listaMonedas.addAll(monedaFacadeLocal.findAll());
-    }
+    private int idMoneda;
+
     
     @PostConstruct
     public void leerListaUsuarios() {
+
         listaUsuarios.addAll(usuarioFacadeLocal.findAll());
+        usReg = new Usuario();
+
+        listaMonedas.addAll(monedaFacadeLocal.findAll());
+        objmoneda = new Moneda();
+
+    }
+
+    public AdministradorView() {
     }
 
     public void crearUsuario() {
         String mensajeSw = "";
         try {
-            
+
             usuarioFacadeLocal.create(usReg);
             listaUsuarios.add(usReg);
             mensajeSw = "swal('Usuario registrado' , ' con exito ', 'success')";
@@ -104,30 +109,37 @@ public class AdministradorView implements Serializable{
         String mensajeSw = "";
         try {
             usuarioFacadeLocal.edit(usReg);
+            usuarioFacadeLocal.actualizarMoneda(idMoneda, usReg.getIdUsuario());
             listaUsuarios.clear();
-            listaUsuarios.addAll(usuarioFacadeLocal.findAll());
+            listaUsuarios.addAll(usuarioFacadeLocal.findAll());          
+            
             mensajeSw = "swal('Usuario modificado' , ' con exito ', 'success')";
         } catch (Exception e) {
             mensajeSw = "swal('Problemas modificando' , ' al usuario  ', 'error')";
         }
+        
         PrimeFaces.current().executeScript(mensajeSw);
+    }
+
+    public void leerListaMonedas(Moneda listaM) {
+
+        this.objmoneda = listaM;
     }
 
     public void correoMasivo() {
         try {
             for (Usuario lUsuario : listaUsuarios) {
-                Email.sendBienvenido(lUsuario.getCorreo(), lUsuario.getNombre()+ " " + lUsuario.getApellidoPaterno()+" "+
-                        " " + lUsuario.getApellidoMaterno(), lUsuario.getCorreo(), lUsuario.getPassword());
-                        
+                Email.sendBienvenido(lUsuario.getCorreo(), lUsuario.getNombre() + " " + lUsuario.getApellidoPaterno() + " "
+                        + " " + lUsuario.getApellidoMaterno(), lUsuario.getCorreo(), lUsuario.getPassword());
+
             }
         } catch (Exception e) {
-            
+
         }
 
     }
-    
-    
-     public void descargaCertificado(String idUsuario)  {
+
+    public void descargaCertificado(String idUsuario) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext context = facesContext.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) context.getRequest();
@@ -136,16 +148,16 @@ public class AdministradorView implements Serializable{
         response.setContentType("application/pdf");
 
         try {
-            Map parametro = new HashMap(); 
+            Map parametro = new HashMap();
             parametro.put("idUsuario", idUsuario);
             parametro.put("RutaImagen", context.getRealPath("/images/senaFondo.jpg"));
             Connection conec = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/dashio", "root", "root");
             System.out.println("Catalogo : " + conec.getCatalog());
-            
+
             File jasper = new File(context.getRealPath("/WEB-INF/classes/edu/webapp1966781a/reportes/certificado.jasper"));
-             
+
             JasperPrint jp = JasperFillManager.fillReport(jasper.getPath(), parametro, conec);
-            
+
             HttpServletResponse hsr = (HttpServletResponse) context.getResponse();
             hsr.addHeader("Content-disposition", "attachment; filename=Certificado.pdf");
             OutputStream os = hsr.getOutputStream();
@@ -153,19 +165,18 @@ public class AdministradorView implements Serializable{
             os.flush();
             os.close();
             facesContext.responseComplete();
-           
+
         } catch (JRException e) {
             System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + e.getMessage());
-        } catch(IOException i){
+        } catch (IOException i) {
             System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + i.getMessage());
-        } catch (SQLException q){
+        } catch (SQLException q) {
             System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + q.getMessage());
         }
 
     }
-     
 
-    public void descargaReporte(String nombreReporte)  {
+    public void descargaReporte(String nombreReporte) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext context = facesContext.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) context.getRequest();
@@ -180,11 +191,11 @@ public class AdministradorView implements Serializable{
             parametro.put("RutaImagen", context.getRealPath("/images/sena.png"));
             Connection conec = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/dashio", "root", "root");
             System.out.println("Catalogo : " + conec.getCatalog());
-            
-            File jasper = new File(context.getRealPath("/WEB-INF/classes/edu/webapp1966781a/reportes/"+nombreReporte+".jasper"));
-             
+
+            File jasper = new File(context.getRealPath("/WEB-INF/classes/edu/webapp1966781a/reportes/" + nombreReporte + ".jasper"));
+
             JasperPrint jp = JasperFillManager.fillReport(jasper.getPath(), parametro, conec);
-            
+
             HttpServletResponse hsr = (HttpServletResponse) context.getResponse();
             hsr.addHeader("Content-disposition", "attachment; filename=Lista Usuarios.pdf");
             OutputStream os = hsr.getOutputStream();
@@ -192,18 +203,17 @@ public class AdministradorView implements Serializable{
             os.flush();
             os.close();
             facesContext.responseComplete();
-           
+
         } catch (JRException e) {
             System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + e.getMessage());
-        } catch(IOException i){
+        } catch (IOException i) {
             System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + i.getMessage());
-        } catch (SQLException q){
+        } catch (SQLException q) {
             System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + q.getMessage());
         }
 
     }
 
-    
     public ArrayList<Usuario> getListaUsuarios() {
         return listaUsuarios;
     }
@@ -235,4 +245,22 @@ public class AdministradorView implements Serializable{
     public void setUsuarioSession(UsuarioSession usuarioSession) {
         this.usuarioSession = usuarioSession;
     }
+
+    public Moneda getObjmoneda() {
+        return objmoneda;
+    }
+
+    public void setObjmoneda(Moneda objmoneda) {
+        this.objmoneda = objmoneda;
+    }
+
+    public int getIdMoneda() {
+        return idMoneda;
+    }
+
+    public void setIdMoneda(int idMoneda) {
+        this.idMoneda = idMoneda;
+    }
+    
+    
 }

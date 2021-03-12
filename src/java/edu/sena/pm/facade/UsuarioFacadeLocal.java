@@ -33,5 +33,7 @@ public interface UsuarioFacadeLocal {
     public Usuario recuperarClave(String correoIn);
 
     public Usuario loginUsuario(String correIn, String claveIn);
+
+    public boolean actualizarMoneda(int idMoneda, int idUsuario);
     
 }
