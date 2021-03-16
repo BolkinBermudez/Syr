@@ -29,22 +29,22 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
     public UsuarioFacade() {
         super(Usuario.class);
     }
-    
+
     @Override
     public Usuario recuperarClave( String correoIn){
         try {
-           Query qt = em.createQuery("SELECT p FROM Usuario p WHERE p.correo = :correoIn");
-           qt.setParameter("correoIn", correoIn);
+            Query qt = em.createQuery("SELECT p FROM Usuario p WHERE p.correo = :correoIn");
+            qt.setParameter("correoIn", correoIn);
            return  (Usuario) qt.getSingleResult();
         } catch (Exception e) {
             return new Usuario();
-        }        
+        }
     }
-    
+
     @Override
     public Usuario loginUsuario( String correIn , String claveIn){
         try {
-            
+
             em.getEntityManagerFactory().getCache().evictAll();
             Query q = em.createQuery("SELECT u FROM Usuario u WHERE u.correo = :correo AND u.password = :clave"  );
             q.setParameter("correo", correIn);
@@ -53,9 +53,9 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
         } catch (Exception e) {
             return new Usuario();
         }
-    } 
-    
-   @Override
+    }
+
+    @Override
     public boolean actualizarMoneda(int idMoneda, int idUsuario) {
         try {
             em.getEntityManagerFactory().getCache().evictAll();
@@ -68,5 +68,5 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
             return false;
         }
     }
-    
+
 }

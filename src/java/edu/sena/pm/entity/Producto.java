@@ -50,7 +50,10 @@ public class Producto implements Serializable {
     private String imagen;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 250)
+    @Size(min = 1, max = 25)
+    @Column(name = "nombreProducto")
+    private String nombreProducto;
+    @Size(max = 250)
     @Column(name = "descripcion")
     private String descripcion;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -58,16 +61,12 @@ public class Producto implements Serializable {
     private Double precioInicial;
     @Column(name = "precioVenta")
     private Double precioVenta;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProducto", fetch = FetchType.LAZY)
-    private Collection<Subasta> subastaCollection;
     @JoinColumn(name = "idSubastador", referencedColumnName = "idUsuario")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario idSubastador;
     @JoinColumn(name = "idCategoria", referencedColumnName = "idCategoria")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Categoria idCategoria;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProducto", fetch = FetchType.LAZY)
-    private Collection<Cesta> cestaCollection;
 
     public Producto() {
     }
@@ -76,10 +75,10 @@ public class Producto implements Serializable {
         this.idProducto = idProducto;
     }
 
-    public Producto(Integer idProducto, String imagen, String descripcion) {
+    public Producto(Integer idProducto, String imagen, String nombreProducto) {
         this.idProducto = idProducto;
         this.imagen = imagen;
-        this.descripcion = descripcion;
+        this.nombreProducto = nombreProducto;
     }
 
     public Integer getIdProducto() {
@@ -96,6 +95,14 @@ public class Producto implements Serializable {
 
     public void setImagen(String imagen) {
         this.imagen = imagen;
+    }
+
+    public String getNombreProducto() {
+        return nombreProducto;
+    }
+
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
     }
 
     public String getDescripcion() {
@@ -122,15 +129,6 @@ public class Producto implements Serializable {
         this.precioVenta = precioVenta;
     }
 
-    @XmlTransient
-    public Collection<Subasta> getSubastaCollection() {
-        return subastaCollection;
-    }
-
-    public void setSubastaCollection(Collection<Subasta> subastaCollection) {
-        this.subastaCollection = subastaCollection;
-    }
-
     public Usuario getIdSubastador() {
         return idSubastador;
     }
@@ -145,15 +143,6 @@ public class Producto implements Serializable {
 
     public void setIdCategoria(Categoria idCategoria) {
         this.idCategoria = idCategoria;
-    }
-
-    @XmlTransient
-    public Collection<Cesta> getCestaCollection() {
-        return cestaCollection;
-    }
-
-    public void setCestaCollection(Collection<Cesta> cestaCollection) {
-        this.cestaCollection = cestaCollection;
     }
 
     @Override
