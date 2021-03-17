@@ -17,6 +17,7 @@ import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -82,12 +83,14 @@ public class UsuarioView implements Serializable {
 
         PrimeFaces.current().executeScript(mensajeSw);
     }
+    
+    
 
     public void subeImagen() {
         String mensajeSw = "";
         if (archivoImagen != null) {
             if (archivoImagen.getSize() < 4000000) {
-                if ("image/jpeg".equals(archivoImagen.getContentType())) {
+                if ("image/jpeg".equals(archivoImagen.getContentType()) || "image/png".equals(archivoImagen.getContentType())) {
                     File carpeta = new File("C:/imgSyR/Productos");
                     if (!carpeta.exists()) {
                         carpeta.mkdirs();
@@ -114,6 +117,24 @@ public class UsuarioView implements Serializable {
 
         PrimeFaces.current().executeScript(mensajeSw);
     }
+    
+    public int contarPorCategoria() {
+        return productoFacadeLocal.contarPorCategoria(objCategoria.getIdCategoria());
+    }
+    
+    public List<Producto> listarPorCategoria() {
+        return productoFacadeLocal.listaPorCategoria(objCategoria.getIdCategoria());
+    }
+    
+     public int catidadProductos() {
+        return productoFacadeLocal.count();
+    }
+
+    public void selecionCategoria(int idCategoria) {
+        objCategoria = categoriaFacadeLocal.find(idCategoria);
+    }
+    
+    
 
     public Producto getObjProd() {
         return objProd;
