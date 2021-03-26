@@ -30,22 +30,22 @@
     <h:body class="bg-dark">
 
         <div class="sufee-login d-flex align-content-center flex-wrap">
-            <div class="container">
+            <div class="container" >
                 <div class="login-content">
                     <div class="login-logo">
                         <a href="../index.xhtml">
-                            <img class="align-content" src="../images/logo.png" alt=""/>
+                            <img class="align-content" src="../assets/img/syr.jpg" alt=""/>
                         </a>
                     </div>
                     <div class="login-form">
                         <h:form>
                             <div class="form-group">
                                 <label>Dirección de correo electrónico</label>
-                                <h:inputText required="true"  requiredMessage="Ingrese un correo" id="regCorreo" value="#{registroUsuarioRequest.correoRecuperar}" class="form-control" html5:placeholder="Correo electrónico"/>
+                                <h:inputText required="true"  requiredMessage="Ingrese un correo" id="regCorreo" value="#{usuarioRequest.correoRecuperar}" class="form-control" html5:placeholder="Correo electrónico"/>
                                 <h:message style="color: red" for="regCorreo"></h:message>
                             </div>
 
-                            <h:commandButton action="#{registroUsuarioRequest.recuperarClave()}" class="btn btn-primary btn-flat m-b-15" value="Enviar"/>
+                            <h:commandButton action="#{usuarioRequest.recuperarClave()}" class="btn btn-primary btn-flat m-b-15" value="Enviar"/>
                         </h:form>
                     </div>
                 </div>

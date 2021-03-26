@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-03-2021 a las 06:45:08
+-- Tiempo de generación: 18-03-2021 a las 05:23:12
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.2
 
@@ -30,26 +30,28 @@ SET time_zone = "+00:00";
 CREATE TABLE `categoria` (
   `idCategoria` int(11) NOT NULL,
   `nombreCategoria` varchar(40) NOT NULL,
-  `descripcion` varchar(250) DEFAULT NULL
+  `descripcion` varchar(250) DEFAULT NULL,
+  `icono` varchar(25) NOT NULL DEFAULT 'fas fa-box-alt',
+  `color` varchar(25) NOT NULL DEFAULT '#fff'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `categoria`
 --
 
-INSERT INTO `categoria` (`idCategoria`, `nombreCategoria`, `descripcion`) VALUES
-(1, 'Tecnología', 'Producto vinculado con la tecnología'),
-(2, 'Hogar', 'Productos para el Hogar'),
-(3, 'Vehículos', 'Medio de locomoción (permite el traslado de un punto a otro). '),
-(4, 'Juguetes', 'objeto para jugar, entretener, divertirse, aprender, generalmente destinado para  niños.'),
-(5, 'Electrodomésticos', 'máquina o aparato que permite realizar y agilizar algunas tareas domésticas de rutina diaria.'),
-(6, 'Belleza y Cuidado Personal', 'Producto de aseo e higiene que permite que el cuerpo y la mente se encuentren saludables.'),
-(7, 'Herramienta y Construcción', 'Producto que sirve para permitir o facilitar una tarea mecánica que sin ella no se podría realizar, o sería muy difícil relacionado con la Construcción'),
-(8, 'Inmuebles', 'Los edificios, las casas y las parcelas o terrenos son inmuebles.'),
-(9, 'Moda Hombre', 'uso, costumbre, novedad, actualidad, usanza, manía, gusto, hábito, estilo para hombres.'),
-(10, 'Moda Mujer', 'uso, costumbre, novedad, actualidad, usanza, manía, gusto, hábito, estilo para Mujeres.'),
-(11, 'Consumibles', ' Que es susceptible de ser consumido o de consumirse.'),
-(12, 'Antigüedades  y Coleccionables', 'objeto que existió en tiempo pasado y pertenecen a una época antigua.');
+INSERT INTO `categoria` (`idCategoria`, `nombreCategoria`, `descripcion`, `icono`, `color`) VALUES
+(1, 'Tecnología', 'Producto vinculado con la tecnología', 'fas fa-box-alt', '#0d6efd'),
+(2, 'Hogar', 'Productos para el Hogar', 'fas fa-box-alt', '#6610f2'),
+(3, 'Vehículos', 'Medio de locomoción (permite el traslado de un punto a otro). ', 'fas fa-box-alt', '#dc3545'),
+(4, 'Juguetes', 'objeto para jugar, entretener, divertirse, aprender, generalmente destinado para  niños.', 'fas fa-box-alt', '#6f42c1'),
+(5, 'Electrodomésticos', 'máquina o aparato que permite realizar y agilizar algunas tareas domésticas de rutina diaria.', 'fas fa-box-alt', '#fd7e14'),
+(6, 'Belleza y Cuidado Personal', 'Producto de aseo e higiene que permite que el cuerpo y la mente se encuentren saludables.', 'fas fa-box-alt', '#ffc107'),
+(7, 'Herramienta y Construcción', 'Producto que sirve para permitir o facilitar una tarea mecánica que sin ella no se podría realizar, o sería muy difícil relacionado con la Construcción', 'fas fa-box-alt', '#198754'),
+(8, 'Inmuebles', 'Los edificios, las casas y las parcelas o terrenos son inmuebles.', 'fas fa-box-alt', '#d63384'),
+(9, 'Moda Hombre', 'uso, costumbre, novedad, actualidad, usanza, manía, gusto, hábito, estilo para hombres.', 'fas fa-box-alt', '#20c997'),
+(10, 'Moda Mujer', 'uso, costumbre, novedad, actualidad, usanza, manía, gusto, hábito, estilo para Mujeres.', 'fas fa-box-alt', '#d63384'),
+(11, 'Consumibles', ' Que es susceptible de ser consumido o de consumirse.', 'fas fa-box-alt', '#198754'),
+(12, 'Antigüedades  y Coleccionables', 'objeto que existió en tiempo pasado y pertenecen a una época antigua.', 'fas fa-box-alt', '#0dcaf0');
 
 -- --------------------------------------------------------
 
@@ -63,6 +65,14 @@ CREATE TABLE `cesta` (
   `precioPagado` double DEFAULT NULL,
   `idComprador` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cesta`
+--
+
+INSERT INTO `cesta` (`idCesta`, `IdProducto`, `precioPagado`, `idComprador`) VALUES
+(1, 1, 21215, 2),
+(2, 2, 25050, 1);
 
 -- --------------------------------------------------------
 
@@ -103,6 +113,14 @@ CREATE TABLE `producto` (
   `idSubastador` int(11) NOT NULL,
   `idCategoria` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `producto`
+--
+
+INSERT INTO `producto` (`idProducto`, `imagen`, `nombreProducto`, `descripcion`, `precioInicial`, `precioVenta`, `idSubastador`, `idCategoria`) VALUES
+(1, 'logo.jpg', 'laser x ultra', 'mirilla roja súper híper ultra ', 20000, 25600, 3, 4),
+(2, 'logo.jpg', 'prueba', 'esta es una prueba ', 10000, 20000, 1, 7);
 
 -- --------------------------------------------------------
 
@@ -207,7 +225,7 @@ ALTER TABLE `categoria`
 -- AUTO_INCREMENT de la tabla `cesta`
 --
 ALTER TABLE `cesta`
-  MODIFY `idCesta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idCesta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `moneda`
@@ -219,7 +237,7 @@ ALTER TABLE `moneda`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `subasta`

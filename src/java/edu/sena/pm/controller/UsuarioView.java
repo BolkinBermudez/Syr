@@ -86,49 +86,39 @@ public class UsuarioView implements Serializable {
     
     
 
-    public void subeImagen() {
-        String mensajeSw = "";
-        if (archivoImagen != null) {
-            if (archivoImagen.getSize() < 4000000) {
-                if ("image/jpeg".equals(archivoImagen.getContentType()) || "image/png".equals(archivoImagen.getContentType())) {
-                    File carpeta = new File("C:/imgSyR/Productos");
-                    if (!carpeta.exists()) {
-                        carpeta.mkdirs();
-                    }
-                    try (InputStream is = archivoImagen.getInputStream()) {
-                        SimpleDateFormat ffecha = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-                        Calendar hoy = Calendar.getInstance();
-                        String renombraArchivo = ffecha.format(hoy.getTime()) + ".";
-                        renombraArchivo += FilenameUtils.getExtension(archivoImagen.getSubmittedFileName());
-                        Files.copy(is, (new File(carpeta, renombraArchivo)).toPath(), StandardCopyOption.REPLACE_EXISTING);
-                        nombreArchivo = renombraArchivo;
-                    } catch (Exception e) {
-                    }
-
-                } else {
-                    mensajeSw = "swal('El archivo' , ' no es una imagen ', 'error')";
-                }
-            } else {
-                mensajeSw = "swal('La imagen' , ' es muy grande  ', 'error')";
-            }
-        } else {
-            mensajeSw = "swal('No se subio' , ' Una imagen  ', 'error')";
-        }
-
-        PrimeFaces.current().executeScript(mensajeSw);
-    }
+//    public void subeImagen() {
+//        String mensajeSw = "";
+//        if (archivoImagen != null) {
+//            if (archivoImagen.getSize() < 4000000) {
+//                if ("image/jpeg".equals(archivoImagen.getContentType()) || "image/png".equals(archivoImagen.getContentType())) {
+//                    File carpeta = new File("C:/imgSyR/Productos");
+//                    if (!carpeta.exists()) {
+//                        carpeta.mkdirs();
+//                    }
+//                    try (InputStream is = archivoImagen.getInputStream()) {
+//                        SimpleDateFormat ffecha = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+//                        Calendar hoy = Calendar.getInstance();
+//                        String renombraArchivo = ffecha.format(hoy.getTime()) + ".";
+//                        renombraArchivo += FilenameUtils.getExtension(archivoImagen.getSubmittedFileName());
+//                        Files.copy(is, (new File(carpeta, renombraArchivo)).toPath(), StandardCopyOption.REPLACE_EXISTING);
+//                        nombreArchivo = renombraArchivo;
+//                    } catch (Exception e) {
+//                    }
+//
+//                } else {
+//                    mensajeSw = "swal('El archivo' , ' no es una imagen ', 'error')";
+//                }
+//            } else {
+//                mensajeSw = "swal('La imagen' , ' es muy grande  ', 'error')";
+//            }
+//        } else {
+//            mensajeSw = "swal('No se subio' , ' Una imagen  ', 'error')";
+//        }
+//
+//        PrimeFaces.current().executeScript(mensajeSw);
+//    }
     
-    public int contarPorCategoria() {
-        return productoFacadeLocal.contarPorCategoria(objCategoria.getIdCategoria());
-    }
     
-    public List<Producto> listarPorCategoria() {
-        return productoFacadeLocal.listaPorCategoria(objCategoria.getIdCategoria());
-    }
-    
-     public int catidadProductos() {
-        return productoFacadeLocal.count();
-    }
 
     public void selecionCategoria(int idCategoria) {
         objCategoria = categoriaFacadeLocal.find(idCategoria);

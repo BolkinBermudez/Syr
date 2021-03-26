@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -30,16 +31,26 @@ public class UsuarioRequest implements Serializable{
 
     @EJB
     private UsuarioFacadeLocal usuarioFacadeLocal;
+    private Usuario objUsuNew = new Usuario();
+    
+     
     @EJB
     private MonedaFacadeLocal monedaFacadeLocal;
-    
-    private Usuario objUsuNew = new Usuario();
     private Moneda objMon= new Moneda();
     private ArrayList<Moneda> listaMonedas = new ArrayList<>();
+    
     private int id_mon_select = 0;
     private String correoRecuperar = "";
     
     public UsuarioRequest() {
+    }
+    
+    
+    @PostConstruct
+    public void leerListaUsuarios() {
+        listaMonedas.addAll(monedaFacadeLocal.findAll());
+        objMon = new Moneda();
+
     }
     
     public void cargaMonedas() {
@@ -70,6 +81,11 @@ public class UsuarioRequest implements Serializable{
     public List<Moneda> listarPorMoneda(){
         listaMonedas =  (ArrayList<Moneda>) monedaFacadeLocal.findAll();
         return listaMonedas;
+    }
+    
+    public void leerListaMonedas(Moneda listaM) {
+
+        this.objMon = listaM;
     }
     
     public void recuperarClave(){
@@ -124,6 +140,22 @@ public class UsuarioRequest implements Serializable{
 
     public void setId_mon_select(int id_mon_select) {
         this.id_mon_select = id_mon_select;
+    }
+
+    public Usuario getObjUsuNew() {
+        return objUsuNew;
+    }
+
+    public void setObjUsuNew(Usuario objUsuNew) {
+        this.objUsuNew = objUsuNew;
+    }
+
+    public String getCorreoRecuperar() {
+        return correoRecuperar;
+    }
+
+    public void setCorreoRecuperar(String correoRecuperar) {
+        this.correoRecuperar = correoRecuperar;
     }
     
 }

@@ -205,11 +205,11 @@ public class AdministradorView implements Serializable {
             facesContext.responseComplete();
 
         } catch (JRException e) {
-            System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + e.getMessage());
+            System.out.println("edu.sena.pm.controller.AdministradorView.descargaReporte() " + e.getMessage());
         } catch (IOException i) {
-            System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + i.getMessage());
+            System.out.println("edu.sena.pm.controller.AdministradorView.descargaReporte() " + i.getMessage());
         } catch (SQLException q) {
-            System.out.println("edu.webapp1966781a.controlador.AdministradorView.descargaReporte() " + q.getMessage());
+            System.out.println("edu.sena.pm.controller.AdministradorView.descargaReporte() " + q.getMessage());
         }
 
     }

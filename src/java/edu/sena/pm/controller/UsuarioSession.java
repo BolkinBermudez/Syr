@@ -78,7 +78,6 @@ public class UsuarioSession implements Serializable {
 
     }
 
- /*
     public String ConsultarRol() {
         try {
             
@@ -95,7 +94,6 @@ public class UsuarioSession implements Serializable {
         return nomRol;
 
     }
-*/
 
     public void actualizarMisDatos() {
         String mensajeSw = "";
