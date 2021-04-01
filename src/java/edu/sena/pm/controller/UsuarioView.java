@@ -67,7 +67,7 @@ public class UsuarioView implements Serializable {
     public void leerListaCategoria(Categoria listaC){
         this.objCategoria = listaC;
     }
-
+    
     public void crearProducto() {
         String mensajeSw = "";
         try {

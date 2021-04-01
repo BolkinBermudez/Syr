@@ -26,10 +26,10 @@ public class UsuarioSession implements Serializable {
 
     @EJB
     UsuarioFacadeLocal usuarioFacadeLocal;
+    private Usuario usuLogin = new Usuario();
 
     private String correIn = "";
     private String claveIn = "";
-    private Usuario usuLogin = new Usuario();
     private String nomRol = "";
 
     /**
@@ -80,7 +80,7 @@ public class UsuarioSession implements Serializable {
 
     public String ConsultarRol() {
         try {
-            
+
             if (usuLogin.getRol() == 1) {
                 nomRol = "Administrador";
             }

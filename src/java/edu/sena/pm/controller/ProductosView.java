@@ -7,8 +7,10 @@ package edu.sena.pm.controller;
 
 import edu.sena.pm.entity.Categoria;
 import edu.sena.pm.entity.Producto;
+import edu.sena.pm.entity.Usuario;
 import edu.sena.pm.facade.CategoriaFacadeLocal;
 import edu.sena.pm.facade.ProductoFacadeLocal;
+import edu.sena.pm.facade.UsuarioFacadeLocal;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +28,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.servlet.http.Part;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -41,28 +44,38 @@ import org.primefaces.shaded.commons.io.FilenameUtils;
 @Named(value = "productosView")
 @ViewScoped
 public class ProductosView implements Serializable {
+    
+    @Inject
+    UsuarioSession usuarioSession;
 
+    
     @EJB
     ProductoFacadeLocal productoFacadeLocal;
     private Producto objProductoNew = new Producto();
+    
+    @EJB
+    UsuarioFacadeLocal usuarioFacadeLocal;
+    private Usuario usuLogin = new Usuario();
     
     @EJB
     CategoriaFacadeLocal categoriaFacadeLocal;
     private Categoria objCategoria = new Categoria();
     private ArrayList<Categoria> listaCategorias = new ArrayList<>();
 
-    
+    private int idUsu = 0;
     private int id_cat_selec = 0;
     private Part archivoImagen;
     private Part archivoExcel;
     private String nombreArchivo;
-
+    private UsuarioSession usuarioLogin ;
+    
     /**
      * Creates a new instance of ProductosView
      */
     @PostConstruct
     public void cargaCategorias() {
         try {
+            usuLogin.getIdUsuario();
             objCategoria = categoriaFacadeLocal.find(1);
             listaCategorias.addAll(categoriaFacadeLocal.findAll());
         } catch (Exception e) {
@@ -72,7 +85,13 @@ public class ProductosView implements Serializable {
 
     public ProductosView() {
     }
-
+    
+//    public void cargarIdUsu(){
+//        
+//        this.idUsu = usuLogin.getIdUsuario();
+//        usuLogin.setIdUsuario(idUsu);
+//    }
+    
     public int contarPorCategoria() {
         return productoFacadeLocal.contarPorCategoria(objCategoria.getIdCategoria());
     }
@@ -163,6 +182,7 @@ public class ProductosView implements Serializable {
             Categoria obt = categoriaFacadeLocal.find(id_cat_selec);
             objProductoNew.setIdCategoria(obt);
             objProductoNew.setImagen(nombreArchivo);
+            objProductoNew.setIdSubastador(usuarioSession.getUsuLogin());
             productoFacadeLocal.create(objProductoNew);
             objProductoNew = new Producto();
             mensajeSw = "swal('Producto registrado' , ' con exito ', 'success')";
@@ -235,6 +255,30 @@ public class ProductosView implements Serializable {
 
     public void setNombreArchivo(String nombreArchivo) {
         this.nombreArchivo = nombreArchivo;
+    }
+
+    public Usuario getUsuLogin() {
+        return usuLogin;
+    }
+
+    public void setUsuLogin(Usuario usuLogin) {
+        this.usuLogin = usuLogin;
+    }
+
+    public int getIdUsu() {
+        return idUsu;
+    }
+
+    public void setIdUsu(int idUsu) {
+        this.idUsu = idUsu;
+    }
+
+    public UsuarioSession getUsuarioLogin() {
+        return usuarioLogin;
+    }
+
+    public void setUsuarioLogin(UsuarioSession usuarioLogin) {
+        this.usuarioLogin = usuarioLogin;
     }
 
    
