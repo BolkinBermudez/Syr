@@ -7,9 +7,11 @@ package edu.sena.pm.controller;
 
 import edu.sena.pm.entity.Categoria;
 import edu.sena.pm.entity.Producto;
+import edu.sena.pm.entity.Subasta;
 import edu.sena.pm.entity.Usuario;
 import edu.sena.pm.facade.CategoriaFacadeLocal;
 import edu.sena.pm.facade.ProductoFacadeLocal;
+import edu.sena.pm.facade.SubastaFacadeLocal;
 import edu.sena.pm.facade.UsuarioFacadeLocal;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +22,7 @@ import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -44,19 +47,24 @@ import org.primefaces.shaded.commons.io.FilenameUtils;
 @Named(value = "productosView")
 @ViewScoped
 public class ProductosView implements Serializable {
-    
+
     @Inject
     UsuarioSession usuarioSession;
 
-    
     @EJB
     ProductoFacadeLocal productoFacadeLocal;
     private Producto objProductoNew = new Producto();
+    private ArrayList<Producto> listaProducto = new ArrayList<>();
+    
+    @EJB
+    private SubastaFacadeLocal subastaFacadeLocal;
+    private Subasta productoSubasta = new Subasta();
+    private ArrayList<Subasta> listaProductoSubasta = new ArrayList<>();
     
     @EJB
     UsuarioFacadeLocal usuarioFacadeLocal;
     private Usuario usuLogin = new Usuario();
-    
+
     @EJB
     CategoriaFacadeLocal categoriaFacadeLocal;
     private Categoria objCategoria = new Categoria();
@@ -67,8 +75,10 @@ public class ProductosView implements Serializable {
     private Part archivoImagen;
     private Part archivoExcel;
     private String nombreArchivo;
-    private UsuarioSession usuarioLogin ;
-    
+    private UsuarioSession usuarioLogin;
+    private double newOffer =0;
+    private Date fechaHoy = new Date();
+
     /**
      * Creates a new instance of ProductosView
      */
@@ -78,20 +88,51 @@ public class ProductosView implements Serializable {
             usuLogin.getIdUsuario();
             objCategoria = categoriaFacadeLocal.find(1);
             listaCategorias.addAll(categoriaFacadeLocal.findAll());
+            listaProducto.addAll(productoFacadeLocal.findAll());
+            listaProductoSubasta.addAll(subastaFacadeLocal.findAll());
         } catch (Exception e) {
-            System.out.println("edu.webapp1966781a.controlador.ProductosView.cargaCategorias() " + e.getMessage());
+            System.out.println("edu.sena.pm.controller.ProductosView.cargaCategorias() " + e.getMessage());
         }
     }
+    
+    public void subastarProducto(Producto objPro) {
+        String mensajeSw = "";
+        try {
+            int dias =1;
+            productoSubasta.setIdProducto(objPro);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(fechaHoy);
+            productoSubasta.setTiempoInicio(calendar.getTime());
+            calendar.add(calendar.DAY_OF_YEAR,dias);
+            productoSubasta.setTiempoFin(calendar.getTime());
+            subastaFacadeLocal.create(productoSubasta);
+            productoSubasta = new Subasta();
+            mensajeSw = "swal('El producto se Subastó' , ' con exito ', 'success')";
+        } catch (Exception e) {
+            mensajeSw = "swal('Problemas al Subastar ' el  producto  ', 'error')";
+        }
 
-    public ProductosView() {
+        PrimeFaces.current().executeScript(mensajeSw);
     }
     
-//    public void cargarIdUsu(){
-//        
-//        this.idUsu = usuLogin.getIdUsuario();
-//        usuLogin.setIdUsuario(idUsu);
-//    }
+    public void cargaOfertaProducto(Producto ofertarProducto) {
+        this.objProductoNew = ofertarProducto;
+    }
     
+     public void ofertarProducto() {
+        String mensajeSw = "";
+        try {
+            
+            productoFacadeLocal.edit(objProductoNew);
+            //listaUsuarios.clear();
+            //listaUsuarios.addAll(usuarioFacadeLocal.findAll());
+            mensajeSw = "swal('Usuario modificado' , ' con exito ', 'success')";
+        } catch (Exception e) {
+            mensajeSw = "swal('Problemas modificando' , ' al usuario  ', 'error')";
+        }
+        PrimeFaces.current().executeScript(mensajeSw);
+    }
+
     public int contarPorCategoria() {
         return productoFacadeLocal.contarPorCategoria(objCategoria.getIdCategoria());
     }
@@ -132,8 +173,6 @@ public class ProductosView implements Serializable {
         PrimeFaces.current().executeScript(mensajeSw);
     }
 
-
-
     public void subeExcel() throws IOException {
         String mensajeSw = "";
         if (archivoExcel != null) {
@@ -157,7 +196,7 @@ public class ProductosView implements Serializable {
                             }
                             cellData.add(cellTemp);
                         }
-                       // insertarXLS(cellData);
+                        // insertarXLS(cellData);
                     } catch (Exception e) {
                         PrimeFaces.current().executeScript("swal('Problemas ingresando el archivo' , 'error');");
                     }
@@ -185,6 +224,8 @@ public class ProductosView implements Serializable {
             objProductoNew.setIdSubastador(usuarioSession.getUsuLogin());
             productoFacadeLocal.create(objProductoNew);
             objProductoNew = new Producto();
+            listaProducto.clear();
+            listaProducto.addAll(productoFacadeLocal.findAll());
             mensajeSw = "swal('Producto registrado' , ' con exito ', 'success')";
         } catch (Exception e) {
             mensajeSw = "swal('Problemas ingresando ' un nuevo producto  ', 'error')";
@@ -281,6 +322,46 @@ public class ProductosView implements Serializable {
         this.usuarioLogin = usuarioLogin;
     }
 
-   
+    public double getNewOffer() {
+        return newOffer;
+    }
 
+    public void setNewOffer(double newOffer) {
+        this.newOffer = newOffer;  
+    }
+
+    public ArrayList<Producto> getListaProducto() {
+        return listaProducto;
+    }
+
+    public void setListaProducto(ArrayList<Producto> listaProducto) {
+        this.listaProducto = listaProducto;
+    }
+
+    public ArrayList<Subasta> getListaProductoSubasta() {
+        return listaProductoSubasta;
+    }
+
+    public void setListaProductoSubasta(ArrayList<Subasta> listaProductoSubasta) {
+        this.listaProductoSubasta = listaProductoSubasta;
+    }
+
+    public Subasta getProductoSubasta() {
+        return productoSubasta;
+    }
+
+    public void setProductoSubasta(Subasta productoSubasta) {
+        this.productoSubasta = productoSubasta;    }
+
+    public Date getFechaHoy() {
+        return fechaHoy;
+    }
+
+    public void setFechaHoy(Date fechaHoy) {
+        this.fechaHoy = fechaHoy;
+
+
+    }
+    
+    
 }
